@@ -309,7 +309,9 @@
                     grid.innerHTML += `
                         <a href="${item.url}" target="_blank" class="product-card">
                             <div>
-                                <div class="img-placeholder">${item.img}</div>
+                                <div class="img-placeholder">
+    <img src="${item.img}" alt="${item.name}" style="width: 100%; height: 100%; object-fit: contain; border-radius: 8px;">
+</div>
                                 <div class="prod-title">${item.name}</div>
                                 <div class="prod-desc">${item.desc}</div>
                             </div>
