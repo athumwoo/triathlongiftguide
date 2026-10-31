@@ -33,47 +33,9 @@
             <h1>Half Ironman (70.3) Gift Guide</h1>
             <p>Vetted, high-performance endurance gear tailored specifically for the demands of a 113km race day. No entry-level fluff—just pure racing essentials.</p>
         </div>
-
-        <div class="product-grid">
-            <!-- Product 1 -->
-            <a href="YOUR_AMAZON_LINK_HERE" target="_blank" class="product-card">
-                <div>
-                    <div class="img-placeholder"><img src="images/cycplus-pump.jpg" alt="Cycplus Pump"></div>
-                    <div class="prod-title">Cycplus A4 Mini Air Pump</div>
-                    <div class="prod-desc">Pocket-sized electronic tire inflator to resolve training or racing flats in under 60 seconds.</div>
-                </div>
-                <div class="prod-price">€53.54</div>
-            </a>
-
-            <!-- Product 2 -->
-            <a href="YOUR_AMAZON_LINK_HERE" target="_blank" class="product-card">
-                <div>
-                    <div class="img-placeholder"><img src="images/garmin-265.jpg" alt="Garmin Watch"></div>
-                    <div class="prod-title">Garmin Forerunner 265</div>
-                    <div class="prod-desc">The industry standard multi-sport watch for managing training loads and split pacing templates.</div>
-                </div>
-                <div class="prod-price">€379.99</div>
-            </a>
-
-            <!-- Product 3 -->
-            <a href="YOUR_AMAZON_LINK_HERE" target="_blank" class="product-card">
-                <div>
-                    <div class="img-placeholder"><img src="images/etixx-gel.jpg" alt="Energy Gel"></div>
-                    <div class="prod-title">Etixx Pro Line Energy Gel</div>
-                    <div class="prod-desc">High carbohydrate fuel (50g) optimized with a 1:0.8 glucose-to-fructose ratio for long efforts.</div>
-                </div>
-                <div class="prod-price">€42.99</div>
-            </a>
-
-            <!-- Product 4 -->
-            <a href="YOUR_AMAZON_LINK_HERE" target="_blank" class="product-card">
-                <div>
-                    <div class="img-placeholder"><img src="images/ryzon-sleeves.jpg" alt="Calf Sleeves"></div>
-                    <div class="prod-title">Ryzon Aero Calf Sleeves</div>
-                    <div class="prod-desc">Engineered aerodynamics to smooth airflow over the trailing edge of the leg during the 90km bike ride.</div>
-                </div>
-                <div class="prod-price">€70.00</div>
-            </a>
+        <!-- Keep your beautiful headers intact. Replace the old static product cards grid with this layout wrapper: -->
+        <div class="product-grid" id="productGrid">
+            <!-- Cards will be injected automatically here by JavaScript based on constraints -->
         </div>
 
         <footer>
@@ -83,6 +45,37 @@
             </p>
         </footer>
     </div>
+
+    <!-- 1. Link to your single, master data spreadsheet file -->
+    <script src="products.js"></script>
+    
+    <!-- 2. Write a minimal script loop to extract only 'half' distance products -->
+    <script>
+        function renderDistancePage() {
+            const grid = document.getElementById('productGrid');
+            grid.innerHTML = '';
+
+            // Filter out items that explicitly include 'half' inside their array tags
+            const filtered = database.filter(item => item.dist.includes('half'));
+
+            filtered.forEach(item => {
+                grid.innerHTML += `
+                    <a href="${item.url}" target="_blank" class="product-card">
+                        <div>
+                            <div class="img-placeholder">
+                                <img src="${item.img}" alt="${item.name}">
+                            </div>
+                            <div class="prod-title">${item.name}</div>
+                            <div class="prod-desc">${item.desc}</div>
+                        </div>
+                        <div class="prod-price">${item.price}</div>
+                    </a>
+                `;
+            });
+        }
+
+        // Run the script instantly on load
+        renderDistancePage();
+    </script>
 </body>
 </html>
-
