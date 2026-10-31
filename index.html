@@ -1,0 +1,313 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Triathlon Gift Guide</title>
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+            transition: all 0.25s cubic-bezier(0.25, 0.8, 0.25, 1);
+        }
+        body {
+            background-color: #111111;
+            color: #ffffff;
+            padding: 16px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            min-height: 100vh;
+        }
+        .container {
+            width: 100%;
+            max-width: 600px;
+            margin-top: 20px;
+        }
+        .header {
+            margin-bottom: 24px;
+            text-align: center;
+        }
+        .header h1 {
+            font-size: 24px;
+            font-weight: 800;
+            letter-spacing: -0.5px;
+            margin-bottom: 4px;
+        }
+        .header p {
+            color: #888888;
+            font-size: 14px;
+        }
+        .filter-box {
+            background-color: #1a1a1a;
+            border: 1px solid #2d2d2d;
+            border-radius: 16px;
+            padding: 20px;
+            margin-bottom: 24px;
+            position: relative;
+            overflow: hidden;
+        }
+        .filter-box.collapsed {
+            padding: 14px 20px;
+        }
+        .filter-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 16px;
+        }
+        .filter-box.collapsed .filter-header {
+            margin-bottom: 0;
+        }
+        .box-title {
+            font-size: 13px;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+        .right-controls {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+        .clear-btn {
+            color: #FF5500;
+            font-size: 13px;
+            cursor: pointer;
+            background: none;
+            border: none;
+            font-weight: 600;
+        }
+        .chevron {
+            cursor: pointer;
+            fill: #ffffff;
+            width: 20px;
+            height: 20px;
+        }
+        .filter-box.collapsed .chevron {
+            transform: rotate(180deg);
+        }
+        .filter-body {
+            display: flex;
+            flex-direction: column;
+            gap: 16px;
+            max-height: 500px;
+            opacity: 1;
+        }
+        .filter-box.collapsed .filter-body {
+            max-height: 0;
+            opacity: 0;
+            pointer-events: none;
+        }
+        .filter-group {
+            display: flex;
+            flex-direction: column;
+            gap: 6px;
+        }
+        .group-label {
+            font-size: 10px;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            color: #666666;
+        }
+        .btn-row {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 6px;
+        }
+        .filter-btn {
+            background-color: transparent;
+            color: #ffffff;
+            border: 1px solid #2d2d2d;
+            padding: 8px 14px;
+            border-radius: 40px;
+            font-size: 12px;
+            font-weight: 600;
+            cursor: pointer;
+        }
+        .filter-btn.active {
+            background-color: #FF5500;
+            border-color: #FF5500;
+            color: #111111;
+        }
+        .product-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 12px;
+            width: 100%;
+        }
+        .product-grid.shuffling {
+            opacity: 0.2;
+            transform: translateY(4px);
+        }
+        .product-card {
+            background-color: #1a1a1a;
+            border: 1px solid #2d2d2d;
+            border-radius: 12px;
+            padding: 12px;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            text-decoration: none;
+            color: inherit;
+        }
+        .product-card:hover {
+            border-color: #444444;
+        }
+        .img-placeholder {
+            background-color: #242424;
+            width: 100%;
+            aspect-ratio: 1;
+            border-radius: 8px;
+            margin-bottom: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 24px;
+        }
+        .prod-title {
+            font-size: 13px;
+            font-weight: 600;
+            margin-bottom: 4px;
+            line-height: 1.3;
+        }
+        .prod-desc {
+            font-size: 11px;
+            color: #888888;
+            margin-bottom: 8px;
+            line-height: 1.4;
+            flex-grow: 1;
+        }
+        .prod-price {
+            font-size: 13px;
+            font-weight: 700;
+            color: #FF5500;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <div class="header">
+            <h1>Triathlon Gift Guide</h1>
+            <p>The perfect gear, curated for the people who love them.</p>
+        </div>
+
+        <div class="filter-box" id="filterBox">
+            <div class="filter-header">
+                <div class="box-title" id="boxTitle">Find Their Fit</div>
+                <div class="right-controls">
+                    <button class="clear-btn" onclick="clearFilters()">Clear</button>
+                    <svg class="chevron" id="chevronArrow" onclick="toggleCollapse()" viewBox="0 0 24 24"><path d="M7.41 8.59L12 13.17l4.59-4.58L18 10l-6 6-6-6 1.41-1.41z"/></svg>
+                </div>
+            </div>
+
+            <div class="filter-body">
+                <div class="filter-group">
+                    <div class="group-label">Experience</div>
+                    <div class="btn-row">
+                        <button class="filter-btn" data-type="exp" data-val="beginner" onclick="selectFilter(this)">First-Timer</button>
+                        <button class="filter-btn" data-type="exp" data-val="hobby" onclick="selectFilter(this)">Full-Time Hobby</button>
+                    </div>
+                </div>
+
+                <div class="filter-group">
+                    <div class="group-label">Price Range</div>
+                    <div class="btn-row">
+                        <button class="filter-btn" data-type="price" data-val="low" onclick="selectFilter(this)">&lt; €30</button>
+                        <button class="filter-btn" data-type="price" data-val="mid" onclick="selectFilter(this)">€30-60</button>
+                        <button class="filter-btn" data-type="price" data-val="high" onclick="selectFilter(this)">€60+</button>
+                    </div>
+                </div>
+
+                <div class="filter-group">
+                    <div class="group-label">Distance</div>
+                    <div class="btn-row">
+                        <button class="filter-btn" data-type="dist" data-val="sprint" onclick="selectFilter(this)">Sprint</button>
+                        <button class="filter-btn" data-type="dist" data-val="olympic" onclick="selectFilter(this)">Olympic</button>
+                        <button class="filter-btn" data-type="dist" data-val="half" onclick="selectFilter(this)">Half</button>
+                        <button class="filter-btn" data-type="dist" data-val="full" onclick="selectFilter(this)">Full</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="product-grid" id="productGrid"></div>
+    </div>
+
+    <script>
+        const database = [
+            { name: "Lock Laces Pack", price: "€15", img: "👟", exp: "beginner", priceTier: "low", dist: ["sprint", "olympic"], desc: "Essential elastic laces to save time during transitions." },
+            { name: "Zone3 Anti-Fog Spray", price: "€12", img: "👓", exp: "hobby", priceTier: "low", dist: ["sprint", "olympic", "half", "full"], desc: "Keeps open-water goggle vision crystal clear." },
+            { name: "Zone3 Vapour Goggles", price: "€45", img: "🥽", exp: "beginner", priceTier: "mid", dist: ["olympic", "half"], desc: "Extremely comfortable polarized swim seals." },
+            { name: "Cycplus AS2 Mini Pump", price: "€49", img: "🚲", exp: "hobby", priceTier: "mid", dist: ["half", "full"], desc: "Pocket-sized electronic tire inflator for flats." },
+            { name: "Precision Fuel Pack", price: "€32", img: "⚡", exp: "beginner", priceTier: "mid", dist: ["olympic", "half"], desc: "Curated carb and hydration starter bundle." },
+            { name: "Form Smart Swim 2", price: "€249", img: "🦈", exp: "hobby", priceTier: "high", dist: ["half", "full"], desc: "Premium smart goggles with a real-time HUD." }
+        ];
+
+        let selections = { exp: null, price: null, dist: null };
+
+        function selectFilter(element) {
+            const type = element.getAttribute('data-type');
+            const value = element.getAttribute('data-val');
+
+            document.querySelectorAll(`[data-type="${type}"]`).forEach(btn => btn.classList.remove('active'));
+            element.classList.add('active');
+            selections[type] = value;
+            updateGrid();
+
+            if (selections.exp && selections.price && selections.dist) {
+                setTimeout(() => {
+                    const box = document.getElementById('filterBox');
+                    if (!box.classList.contains('collapsed')) toggleCollapse();
+                }, 600);
+            }
+        }
+
+        function updateGrid() {
+            const grid = document.getElementById('productGrid');
+            grid.classList.add('shuffling');
+
+            setTimeout(() => {
+                grid.innerHTML = '';
+                const filtered = database.filter(item => {
+return (!selections.exp || item.exp === selections.exp) &&
+(!selections.price || item.priceTier === selections.price) &&
+(!selections.dist || item.dist.includes(selections.dist));
+});
+if (filtered.length === 0) {
+grid.innerHTML = <div style="grid-column: span 2; text-align: center; color: #555; padding: 40px 0; font-size:13px;">No items match this exact split. Try another combination!</div>;
+} else {
+filtered.forEach(item => {
+grid.innerHTML += <div class="product-card"> <div class="img-placeholder">${item.img}</div> <div class="prod-title">${item.name}</div> <div class="prod-desc">${item.desc}</div> <div class="prod-price">${item.price}</div> </div>;
+});
+}
+grid.classList.remove('shuffling');
+}, 150);
+}
+function toggleCollapse() {
+const box = document.getElementById('filterBox');
+const title = document.getElementById('boxTitle');
+box.classList.toggle('collapsed');
+if (box.classList.contains('collapsed')) {
+let summary = [];
+if (selections.exp) summary.push(selections.exp === 'beginner' ? 'First-Timer' : 'Hobbyist');
+if (selections.price) summary.push(selections.price === 'low' ? '<€30' : selections.price === 'mid' ? '€30-60' : '€60+');
+if (selections.dist) summary.push(selections.dist.toUpperCase());
+title.innerText = summary.length > 0 ? Filters: ${summary.join(' • ')} : "Filters Hidden";
+title.style.color = "#FF5500";
+} else {
+title.innerText = "Find Their Fit";
+title.style.color = "#ffffff";
+}
+}
+function clearFilters() {
+selections = { exp: null, price: null, dist: null };
+document.querySelectorAll('.filter-btn').forEach(btn => btn.classList.remove('active'));
+if (document.getElementById('filterBox').classList.contains('collapsed')) toggleCollapse();
+updateGrid();
+}
+updateGrid();
