@@ -258,28 +258,35 @@
         { name: "Topeak Top-Bar Fuel Bag", price: "€35.00", img: "images/topeak-top-tube-bag.jpg", url: "https://topeak.com", exp: "both", priceTier: "mid", dist: ["sprint", "olympic", "half", "full"], desc: "Sleek, frame-mounted nutrition cockpit providing fast access to bars and gels on the bike." }
     ];
 
-    let selections = { exp: [], price: [], dist: [] };
+    let selections = { exp: null, price: [], dist: [] };
 
     function selectFilter(element) {
         const type = element.getAttribute('data-type');
         const value = element.getAttribute('data-val');
 
-        if (element.classList.contains('active')) {
-            element.classList.remove('active');
-            selections[type] = selections[type].filter(item => item !== value);
+        if (type === 'exp') {
+            // Radio Button Logic: Clear neighbors instantly on click
+            if (element.classList.contains('active')) {
+                element.classList.remove('active');
+                selections.exp = null;
+            } else {
+                document.querySelectorAll('[data-type="exp"]').forEach(btn => btn.classList.remove('active'));
+                element.classList.add('active');
+                selections.exp = value;
+            }
         } else {
-            element.classList.add('active');
-            selections[type].push(value);
+            // Checkbox Logic: Retained multi-select parameters for price and distance
+            if (element.classList.contains('active')) {
+                element.classList.remove('active');
+                selections[type] = selections[type].filter(item => item !== value);
+            } else {
+                element.classList.add('active');
+                selections[type].push(value);
+            }
         }
         
         updateGrid();
-
-        if (selections.exp.length > 0 && selections.price.length > 0 && selections.dist.length > 0) {
-            setTimeout(() => {
-                const box = document.getElementById('filterBox');
-                if (!box.classList.contains('collapsed')) toggleCollapse();
-            }, 600);
-        }
+        // Removed the auto-collapse setTimeouts to ensure box stays open permanently on text selection
     }
 
     function updateGrid() {
@@ -289,10 +296,10 @@
         setTimeout(() => {
             grid.innerHTML = '';
             const filtered = database.filter(item => {
-                // Fixed: Explicit handling of empty tracking logs to show all assets initially
-                const matchExp = selections.exp.length === 0 || 
+                // Evaluates the single experience string or default 'both' bypass values
+                const matchExp = !selections.exp || 
                                  item.exp === 'both' || 
-                                 selections.exp.includes(item.exp);
+                                 item.exp === selections.exp;
                 
                 const matchPrice = selections.price.length === 0 || 
                                    selections.price.includes(item.priceTier);
@@ -311,8 +318,8 @@
                         <a href="${item.url}" target="_blank" class="product-card">
                             <div>
                                 <div class="img-placeholder">
-    <img src="${item.img}" alt="${item.name}" style="width: 100%; height: 100%; object-fit: cover; border-radius: 8px;">
-</div>
+                                    <img src="${item.img}" alt="${item.name}" style="width: 100%; height: 100%; object-fit: contain; border-radius: 4px;">
+                                </div>
                                 <div class="prod-title">${item.name}</div>
                                 <div class="prod-desc">${item.desc}</div>
                             </div>
@@ -332,9 +339,8 @@
         
         if (box.classList.contains('collapsed')) {
             let summary = [];
-            if (selections.exp.length > 0) {
-                const expLabels = selections.exp.map(e => e === 'beginner' ? 'First-Timer' : 'Hobbyist');
-                summary.push(expLabels.join('+'));
+            if (selections.exp) {
+                summary.push(selections.exp === 'beginner' ? 'First-Timer' : 'Hobbyist');
             }
             if (selections.price.length > 0) {
                 const priceLabels = selections.price.map(p => p === 'low' ? '<€30' : p === 'mid' ? '€30-60' : '€60+');
@@ -353,12 +359,11 @@
     }
 
     function clearFilters() {
-        selections = { exp: [], price: [], dist: [] };
+        selections = { exp: null, price: [], dist: [] };
         document.querySelectorAll('.filter-btn').forEach(btn => btn.classList.remove('active'));
         if (document.getElementById('filterBox').classList.contains('collapsed')) toggleCollapse();
         updateGrid();
     }
 
-    // Force call on file load
     updateGrid();
 </script>
