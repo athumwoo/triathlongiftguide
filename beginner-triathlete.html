@@ -49,12 +49,21 @@
             const grid = document.getElementById('productGrid');
             grid.innerHTML = '';
             
-            const filtered = database.filter(item => {
-                if (pageMode === 'distance-sprint') return item.dist.includes('sprint');
-                if (pageMode === 'distance-olympic') return item.dist.includes('olympic');
-                if (pageMode === 'experience-beginner') return item.exp === 'beginner' || item.exp === 'both';               
-                return true;
-            });
+           const filtered = database.filter(item => {
+    if (pageMode === 'distance-sprint') {
+        return item.dist.includes('sprint');
+    }
+    if (pageMode === 'distance-olympic') {
+        return item.dist.includes('olympic');
+    }
+    if (pageMode === 'experience-beginner') {
+        return item.exp === 'beginner' || item.exp === 'both';
+    }
+    
+    // Fallback if no pageMode matches
+    return false; 
+});
+
 
             filtered.forEach(item => {
                 grid.innerHTML += `
