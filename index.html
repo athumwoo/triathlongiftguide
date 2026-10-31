@@ -239,99 +239,123 @@
     </div>
 
     <script>
-        const database = [
-            { name: "Cycplus A4 Mini Air Pump", price: "€53.54", img: "🚲", url: "https://cycplus.com", exp: "hobby", priceTier: "mid", dist: ["olympic", "half", "full"], desc: "Pocket-sized electronic tire inflator for flat tires in training and racing." },
-            { name: "Garmin Forerunner 265", price: "€379.99", img: "⌚️", url: "https://garmin.com", exp: "both", priceTier: "high", dist: ["sprint", "olympic", "half", "full"], desc: "Track your training data, daily recovery metrics, and race-day stats." },
-            { name: "Garmin Edge 1060", price: "€799.99", img: "🧭", url: "https://garmin.com", exp: "hobby", priceTier: "high", dist: ["olympic", "half", "full"], desc: "Premium navigation system to track your bike data and route analytics." },
-            { name: "Orca Speed Laces Triathlon", price: "€10", img: "👟", url: "https://orca.com", exp: "both", priceTier: "low", dist: ["sprint", "olympic", "half", "full"], desc: "High-tension elastic speed laces to cut critical time in transitions." },
-            { name: "Orca Killa Comfort Goggles", price: "€29", img: "🥽", url: "https://orca.com", exp: "both", priceTier: "low", dist: ["sprint", "olympic", "half", "full"], desc: "Wide field of vision, perfect for handling busy open-water swim starts." },
-            { name: "Anti-Fog Goggles Spray", price: "€12.99", img: "💦", url: "https://arenasport.com", exp: "both", priceTier: "low", dist: ["sprint", "olympic", "half", "full"], desc: "Simple spray application to keep goggle vision fog-free on long training sets." },
-            { name: "Dryrobe Changing Robe", price: "€165", img: "👘", url: "https://dryrobe.com", exp: "both", priceTier: "high", dist: ["sprint", "olympic", "half", "full"], desc: "The original weatherproof robe, designed for quick outdoor changes post-swim." },
-{ name: "Finis Agility Paddles", price: "€30", img: "🏓", url: "finisswim.eu", exp: "hobby", priceTier: "mid", dist: ["sprint", "olympic", "half", "full"], desc: "Ergonomic strapless hand paddles built to refine underwater catch technique." },
-{ name: "Etixx Pro Line Energy Gel", price: "€42.99", img: "🧃", url: "etixxsports.com", exp: "hobby", priceTier: "mid", dist: ["sprint", "olympic", "half", "full"], desc: "High carbohydrate (50g) racing gel mixed in a performance 1:0.8 ratio." },
-{ name: "PF&H PH1000 Electrolyte Tabs", price: "€9.99", img: "💊", url: "precisionhydration.com", exp: "both", priceTier: "low", dist: ["sprint", "olympic", "half", "full"], desc: "Aggressive electrolyte replenishment mix built to prevent cramping from high sweat rates." },
-{ name: "Renpho Massage Gun", price: "€129.99", img: "💆‍♂️", url: "renpho.eu", exp: "both", priceTier: "high", dist: ["sprint", "olympic", "half", "full"], desc: "Multi-speed percussion therapy device with 5 heads to speed up muscle recovery." },
-{ name: "Coros Pace 4 Watch", price: "€269.00", img: "⌚", url: "coros.com", exp: "both", priceTier: "high", dist: ["sprint", "olympic", "half", "full"], desc: "Ultra-lightweight multi-sport GPS tracker offering deep training data metrics." },
-{ name: "The Triathletes Training Bible", price: "€25.01", img: "📚", url: "amazon.com", exp: "both", priceTier: "low", dist: ["sprint", "olympic", "half", "full"], desc: "The ultimate training blueprint for executing self-coaching limits." },
-{ name: "Ryzon Aero Calf Sleeves", price: "€70.00", img: "🧦", url: "ryzon.net", exp: "both", priceTier: "high", dist: ["sprint", "olympic", "half", "full"], desc: "Engineered compression sleeves designed to optimize aero airflow over the bike course." },
-{ name: "Topeak Top-Bar Fuel Bag", price: "€35.00", img: "🚴", url: "topeak.com", exp: "both", priceTier: "mid", dist: ["sprint", "olympic", "half", "full"], desc: "Sleek, frame-mounted nutrition cockpit providing fast access to bars and gels on the bike." }
-];
-// Core State Management supporting arrays for multiple active buttons per row
-let selections = { exp: [], price: [], dist: [] };
-function selectFilter(element) {
-const type = element.getAttribute('data-type');
-const value = element.getAttribute('data-val');
-if (element.classList.contains('active')) {
-element.classList.remove('active');
-selections[type] = selections[type].filter(item => item !== value);
-} else {
-element.classList.add('active');
-selections[type].push(value);
-}
-updateGrid();
-// Auto-collapse checks if at least one selection is made across all rows
-if (selections.exp.length > 0 && selections.price.length > 0 && selections.dist.length > 0) {
-setTimeout(() => {
-const box = document.getElementById('filterBox');
-if (!box.classList.contains('collapsed')) toggleCollapse();
-}, 600);
-}
-}
-function updateGrid() {
-const grid = document.getElementById('productGrid');
-grid.classList.add('shuffling');
-setTimeout(() => {
-grid.innerHTML = '';
-const filtered = database.filter(item => {
-// Refactored Multi-Selection evaluation logic
-const matchExp = selections.exp.length === 0 ||
-selections.exp.includes(item.exp) ||
-item.exp === 'both';
-const matchPrice = selections.price.length === 0 ||
-selections.price.includes(item.priceTier);
-const matchDist = selections.dist.length === 0 ||
-selections.dist.some(d => item.dist.includes(d));
-return matchExp && matchPrice && matchDist;
-});
-if (filtered.length === 0) {
-grid.innerHTML = <div style="grid-column: span 2; text-align: center; color: #555; padding: 40px 0; font-size:13px;">No items match this exact split. Try another combination!</div>;
-} else {
-filtered.forEach(item => {
-grid.innerHTML += <a href="${item.url}" target="_blank" class="product-card"> <div> <div class="img-placeholder">${item.img}</div> <div class="prod-title">${item.name}</div> <div class="prod-desc">${item.desc}</div> </div> <div class="prod-price" style="margin-top: 8px;">${item.price}</div> </a>;
-});
-}
-grid.classList.remove('shuffling');
-}, 150);
-}
-function toggleCollapse() {
-const box = document.getElementById('filterBox');
-const title = document.getElementById('boxTitle');
-box.classList.toggle('collapsed');
-if (box.classList.contains('collapsed')) {
-let summary = [];
-if (selections.exp.length > 0) {
-const expLabels = selections.exp.map(e => e === 'beginner' ? 'First-Timer' : 'Hobbyist');
-summary.push(expLabels.join('+'));
-}
-if (selections.price.length > 0) {
-const priceLabels = selections.price.map(p => p === 'low' ? '<€30' : p === 'mid' ? '€30-60' : '€60+');
-summary.push(priceLabels.join('/'));
-}
-if (selections.dist.length > 0) {
-const distLabels = selections.dist.map(d => d.toUpperCase());
-summary.push(distLabels.join('/'));
-}
-title.innerText = summary.length > 0 ? Filters: ${summary.join(' • ')} : "Filters Hidden";
-title.style.color = "#FF5500";
-} else {
-title.innerText = "Find Their Fit";
-title.style.color = "#ffffff";
-}
-}
-function clearFilters() {
-selections = { exp: [], price: [], dist: [] };
-document.querySelectorAll('.filter-btn').forEach(btn => btn.classList.remove('active'));
-if (document.getElementById('filterBox').classList.contains('collapsed')) toggleCollapse();
-updateGrid();
-}
-updateGrid();
+    const database = [
+        { name: "Cycplus A4 Mini Air Pump", price: "€53.54", img: "🚲", url: "https://cycplus.com", exp: "hobby", priceTier: "mid", dist: ["olympic", "half", "full"], desc: "Pocket-sized electronic tire inflator for flat tires in training and racing." },
+        { name: "Garmin Forerunner 265", price: "€379.99", img: "⌚️", url: "https://garmin.com", exp: "both", priceTier: "high", dist: ["sprint", "olympic", "half", "full"], desc: "Track your training data, daily recovery metrics, and race-day stats." },
+        { name: "Garmin Edge 1060", price: "€799.99", img: "🧭", url: "https://garmin.com", exp: "hobby", priceTier: "high", dist: ["olympic", "half", "full"], desc: "Premium navigation system to track your bike data and route analytics." },
+        { name: "Orca Speed Laces Triathlon", price: "€10", img: "👟", url: "https://orca.com", exp: "both", priceTier: "low", dist: ["sprint", "olympic", "half", "full"], desc: "High-tension elastic speed laces to cut critical time in transitions." },
+        { name: "Orca Killa Comfort Goggles", price: "€29", img: "🥽", url: "https://orca.com", exp: "both", priceTier: "low", dist: ["sprint", "olympic", "half", "full"], desc: "Wide field of vision, perfect for handling busy open-water swim starts." },
+        { name: "Anti-Fog Goggles Spray", price: "€12.99", img: "💦", url: "https://arenasport.com", exp: "both", priceTier: "low", dist: ["sprint", "olympic", "half", "full"], desc: "Simple spray application to keep goggle vision fog-free on long training sets." },
+        { name: "Dryrobe Changing Robe", price: "€165", img: "👘", url: "https://dryrobe.com", exp: "both", priceTier: "high", dist: ["sprint", "olympic", "half", "full"], desc: "The original weatherproof robe, designed for quick outdoor changes post-swim." },
+        { name: "Finis Agility Paddles", price: "€30", img: "🏓", url: "https://finisswim.eu", exp: "hobby", priceTier: "mid", dist: ["sprint", "olympic", "half", "full"], desc: "Ergonomic strapless hand paddles built to refine underwater catch technique." },
+        { name: "Etixx Pro Line Energy Gel", price: "€42.99", img: "🧃", url: "https://etixxsports.com", exp: "hobby", priceTier: "mid", dist: ["sprint", "olympic", "half", "full"], desc: "High carbohydrate (50g) racing gel mixed in a performance 1:0.8 ratio." },
+        { name: "PF&H PH1000 Electrolyte Tabs", price: "€9.99", img: "💊", url: "https://precisionhydration.com", exp: "both", priceTier: "low", dist: ["sprint", "olympic", "half", "full"], desc: "Aggressive electrolyte replenishment mix built to prevent cramping from high sweat rates." },
+        { name: "Renpho Massage Gun", price: "€129.99", img: "💆‍♂️", url: "https://renpho.eu", exp: "both", priceTier: "high", dist: ["sprint", "olympic", "half", "full"], desc: "Multi-speed percussion therapy device with 5 heads to speed up muscle recovery." },
+        { name: "Coros Pace 4 Watch", price: "€269.00", img: "⌚", url: "https://coros.com", exp: "both", priceTier: "high", dist: ["sprint", "olympic", "half", "full"], desc: "Ultra-lightweight multi-sport GPS tracker offering deep training data metrics." },
+        { name: "The Triathletes Training Bible", price: "€25.01", img: "📚", url: "https://amazon.com", exp: "both", priceTier: "low", dist: ["sprint", "olympic", "half", "full"], desc: "The ultimate training blueprint for executing self-coaching limits." },
+        { name: "Ryzon Aero Calf Sleeves", price: "€70.00", img: "🧦", url: "https://ryzon.net", exp: "both", priceTier: "high", dist: ["sprint", "olympic", "half", "full"], desc: "Engineered compression sleeves designed to optimize aero airflow over the bike course." },
+        { name: "Topeak Top-Bar Fuel Bag", price: "€35.00", img: "🚴", url: "https://topeak.com", exp: "both", priceTier: "mid", dist: ["sprint", "olympic", "half", "full"], desc: "Sleek, frame-mounted nutrition cockpit providing fast access to bars and gels on the bike." }
+    ];
+
+    let selections = { exp: [], price: [], dist: [] };
+
+    function selectFilter(element) {
+        const type = element.getAttribute('data-type');
+        const value = element.getAttribute('data-val');
+
+        if (element.classList.contains('active')) {
+            element.classList.remove('active');
+            selections[type] = selections[type].filter(item => item !== value);
+        } else {
+            element.classList.add('active');
+            selections[type].push(value);
+        }
+        
+        updateGrid();
+
+        if (selections.exp.length > 0 && selections.price.length > 0 && selections.dist.length > 0) {
+            setTimeout(() => {
+                const box = document.getElementById('filterBox');
+                if (!box.classList.contains('collapsed')) toggleCollapse();
+            }, 600);
+        }
+    }
+
+    function updateGrid() {
+        const grid = document.getElementById('productGrid');
+        grid.classList.add('shuffling');
+
+        setTimeout(() => {
+            grid.innerHTML = '';
+            const filtered = database.filter(item => {
+                // Fixed: Explicit handling of empty tracking logs to show all assets initially
+                const matchExp = selections.exp.length === 0 || 
+                                 item.exp === 'both' || 
+                                 selections.exp.includes(item.exp);
+                
+                const matchPrice = selections.price.length === 0 || 
+                                   selections.price.includes(item.priceTier);
+                
+                const matchDist = selections.dist.length === 0 || 
+                                  selections.dist.some(d => item.dist.includes(d));
+                
+                return matchExp && matchPrice && matchDist;
+            });
+
+            if (filtered.length === 0) {
+                grid.innerHTML = `<div style="grid-column: span 2; text-align: center; color: #555; padding: 40px 0; font-size:13px;">No items match this exact split. Try another combination!</div>`;
+            } else {
+                filtered.forEach(item => {
+                    grid.innerHTML += `
+                        <a href="${item.url}" target="_blank" class="product-card">
+                            <div>
+                                <div class="img-placeholder">${item.img}</div>
+                                <div class="prod-title">${item.name}</div>
+                                <div class="prod-desc">${item.desc}</div>
+                            </div>
+                            <div class="prod-price" style="margin-top: 8px;">${item.price}</div>
+                        </a>
+                    `;
+                });
+            }
+            grid.classList.remove('shuffling');
+        }, 150);
+    }
+
+    function toggleCollapse() {
+        const box = document.getElementById('filterBox');
+        const title = document.getElementById('boxTitle');
+        box.classList.toggle('collapsed');
+        
+        if (box.classList.contains('collapsed')) {
+            let summary = [];
+            if (selections.exp.length > 0) {
+                const expLabels = selections.exp.map(e => e === 'beginner' ? 'First-Timer' : 'Hobbyist');
+                summary.push(expLabels.join('+'));
+            }
+            if (selections.price.length > 0) {
+                const priceLabels = selections.price.map(p => p === 'low' ? '<€30' : p === 'mid' ? '€30-60' : '€60+');
+                summary.push(priceLabels.join('/'));
+            }
+            if (selections.dist.length > 0) {
+                const distLabels = selections.dist.map(d => d.toUpperCase());
+                summary.push(distLabels.join('/'));
+            }
+            title.innerText = summary.length > 0 ? `Filters: ${summary.join(' • ')}` : "Filters Hidden";
+            title.style.color = "#FF5500";
+        } else {
+            title.innerText = "Find Their Fit";
+            title.style.color = "#ffffff";
+        }
+    }
+
+    function clearFilters() {
+        selections = { exp: [], price: [], dist: [] };
+        document.querySelectorAll('.filter-btn').forEach(btn => btn.classList.remove('active'));
+        if (document.getElementById('filterBox').classList.contains('collapsed')) toggleCollapse();
+        updateGrid();
+    }
+
+    // Force call on file load
+    updateGrid();
+</script>
