@@ -163,10 +163,27 @@
             justify-content: space-between;
             text-decoration: none;
             color: inherit;
+            position: relative;
         }
         .product-card:hover {
             border-color: #444444;
         }
+
+        /* Badge for Discount / Deals */
+.prod-badge {
+    position: absolute;
+    top: 18px;
+    left: 18px;
+    background-color: #FF5500;
+    color: #ffffff;
+    font-size: 10px;
+    font-weight: 700;
+    padding: 3px 8px;
+    border-radius: 4px;
+    letter-spacing: 0.5px;
+    z-index: 2;
+    text-transform: uppercase;
+}
         .img-placeholder {
     background-color: #ffffff; /* Forces a solid white tile background */
     padding: 8px;              /* Adds a clean safety margin around the product image */
@@ -192,11 +209,22 @@
             line-height: 1.4;
             flex-grow: 1;
         }
+        /* Price Section */
+.price-row {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
         .prod-price {
             font-size: 13px;
             font-weight: 700;
             color: #FF5500;
         }
+        .old-price {
+    font-size: 11px;
+    color: #666666;
+    text-decoration: line-through;
+}
     </style>
 </head>
 <body>
@@ -380,6 +408,31 @@
         if (document.getElementById('filterBox').classList.contains('collapsed')) toggleCollapse();
         updateGrid();
     }
+function renderProductCard(p) {
+    // 1. Badge element (only renders if discountPercent is defined)
+    const badgeHTML = p.discountPercent 
+        ? `<span class="prod-badge">SAVE ${p.discountPercent}%</span>` 
+        : '';
 
+    // 2. Price section (renders strikethrough old price if oldPrice is defined)
+    const priceHTML = p.oldPrice 
+        ? `<div class="price-row">
+             <span class="prod-price">${p.price}</span>
+             <span class="old-price">${p.oldPrice}</span>
+           </div>`
+        : `<div class="prod-price">${p.price}</div>`;
+
+    return `
+        <a href="${p.url}" target="_blank" rel="noopener noreferrer" class="product-card">
+            ${badgeHTML}
+            <div class="img-placeholder">
+                <img src="${p.img}" alt="${p.name}" style="max-width:100%; max-height:100%; object-fit:contain;">
+            </div>
+            <div class="prod-title">${p.name}</div>
+            <div class="prod-desc">${p.desc}</div>
+            ${priceHTML}
+        </a>
+    `;
+}
     updateGrid();
 </script>
