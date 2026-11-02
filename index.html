@@ -143,33 +143,24 @@
             border-color: #FF5500;
             color: #111111;
         }
-        .product-grid {
-            display: grid;
-            grid-template-columns: repeat(2, 1fr);
-            gap: 12px;
-            width: 100%;
-        }
-        .product-grid.shuffling {
-            opacity: 0.2;
-            transform: translateY(4px);
-        }
         .product-card {
-            background-color: #1a1a1a;
-            border: 1px solid #2d2d2d;
-            border-radius: 12px;
-            padding: 12px;
-            display: flex;
-            flex-direction: column;
-            justify-content: space-between;
-            text-decoration: none;
-            color: inherit;
-            position: relative;
-        }
-        .product-card:hover {
-            border-color: #444444;
-        }
+    background-color: #1a1a1a;
+    border: 1px solid #2d2d2d;
+    border-radius: 12px;
+    padding: 12px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    text-decoration: none;
+    color: inherit;
+    position: relative; /* Required for the discount badge overlay */
+}
 
-        /* Badge for Discount / Deals */
+.product-card:hover {
+    border-color: #444444;
+}
+
+/* Badge for Discount / Deals */
 .prod-badge {
     position: absolute;
     top: 18px;
@@ -184,9 +175,10 @@
     z-index: 2;
     text-transform: uppercase;
 }
-        .img-placeholder {
-    background-color: #ffffff; /* Forces a solid white tile background */
-    padding: 8px;              /* Adds a clean safety margin around the product image */
+
+.img-placeholder {
+    background-color: #ffffff; /* Solid white tile background */
+    padding: 8px;              /* Clean margin around product image */
     width: 100%;
     aspect-ratio: 1;
     border-radius: 8px;
@@ -194,33 +186,38 @@
     display: flex;
     align-items: center;
     justify-content: center;
-    overflow: hidden;         /* Ensures images stay locked inside the rounded corners */
+    overflow: hidden;
 }
-        .prod-title {
-            font-size: 13px;
-            font-weight: 600;
-            margin-bottom: 4px;
-            line-height: 1.3;
-        }
-        .prod-desc {
-            font-size: 11px;
-            color: #888888;
-            margin-bottom: 8px;
-            line-height: 1.4;
-            flex-grow: 1;
-        }
-        /* Price Section */
+
+.prod-title {
+    font-size: 13px;
+    font-weight: 600;
+    margin-bottom: 4px;
+    line-height: 1.3;
+}
+
+.prod-desc {
+    font-size: 11px;
+    color: #888888;
+    margin-bottom: 8px;
+    line-height: 1.4;
+    flex-grow: 1;
+}
+
+/* Price Section Styling */
 .price-row {
     display: flex;
     align-items: center;
     gap: 8px;
 }
-        .prod-price {
-            font-size: 13px;
-            font-weight: 700;
-            color: #FF5500;
-        }
-        .old-price {
+
+.prod-price {
+    font-size: 13px;
+    font-weight: 700;
+    color: #FF5500;
+}
+
+.old-price {
     font-size: 11px;
     color: #666666;
     text-decoration: line-through;
