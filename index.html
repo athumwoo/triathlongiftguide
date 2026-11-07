@@ -197,6 +197,14 @@
             font-weight: 700;
             color: #FF5500;
         }
+        .ad-label {
+            font-size: 9px;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            color: #888888;
+            margin-bottom: 6px;
+        }
     </style>
 </head>
 <body>
@@ -300,7 +308,10 @@
                 selections[type].push(value);
             }
         }
-        
+
+        // Umami: record which filters visitors use (safe if Umami is blocked or not loaded)
+        if (window.umami) umami.track('filter', { type: type, value: value });
+
         updateGrid();
         // Removed the auto-collapse setTimeouts to ensure box stays open permanently on text selection
     }
@@ -317,7 +328,9 @@
                                  item.exp === 'both' || 
                                  item.exp === selections.exp;
                 
+                // priceTier 'any' (used by the i-Run ad) stays visible under every price filter
                 const matchPrice = selections.price.length === 0 || 
+                                   item.priceTier === 'any' ||
                                    selections.price.includes(item.priceTier);
                 
                 const matchDist = selections.dist.length === 0 || 
@@ -330,9 +343,15 @@
                 grid.innerHTML = `<div style="grid-column: span 2; text-align: center; color: #555; padding: 40px 0; font-size:13px;">No items match this exact split. Try another combination!</div>`;
             } else {
                 filtered.forEach(item => {
+                    const kind = item.sponsored ? 'ad' : 'product';
+                    const rel = item.sponsored ? 'sponsored noopener' : 'noopener';
                     grid.innerHTML += `
-                        <a href="${item.url}" target="_blank" class="product-card">
+                        <a href="${item.url}" target="_blank" rel="${rel}" class="product-card"
+                           data-umami-event="product-click"
+                           data-umami-event-product="${item.name}"
+                           data-umami-event-kind="${kind}">
                             <div>
+                                ${item.sponsored ? '<div class="ad-label">Ad</div>' : ''}
                                 <div class="img-placeholder">
                                     <img src="${item.img}" alt="${item.name}" style="width: 100%; height: 100%; object-fit: contain; border-radius: 4px;">
                                 </div>
@@ -383,3 +402,5 @@
 
     updateGrid();
 </script>
+</body>
+</html>
