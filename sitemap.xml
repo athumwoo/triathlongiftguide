@@ -1,23 +1,19 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<urlset xmlns="http://sitemaps.org">
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
     <url>
-        <loc>https://triathlongiftguide.com</loc>
-        <changefreq>weekly</changefreq>
-        <priority>1.0</priority>
+        <loc>https://triathlongiftguide.com/</loc>
+        <lastmod>2026-11-07</lastmod>
     </url>
     <url>
-        <loc>https://triathlongiftguide.combeginner-triathlete.html</loc>
-        <changefreq>weekly</changefreq>
-        <priority>0.8</priority>
+        <loc>https://triathlongiftguide.com/beginner-triathlete.html</loc>
+        <lastmod>2026-11-07</lastmod>
     </url>
     <url>
-        <loc>https://triathlongiftguide.comolympic-triathlon.html</loc>
-        <changefreq>weekly</changefreq>
-        <priority>0.8</priority>
+        <loc>https://triathlongiftguide.com/olympic-triathlon.html</loc>
+        <lastmod>2026-11-07</lastmod>
     </url>
     <url>
-        <loc>https://triathlongiftguide.comhalf-ironman.html</loc>
-        <changefreq>weekly</changefreq>
-        <priority>0.8</priority>
+        <loc>https://triathlongiftguide.com/half-ironman.html</loc>
+        <lastmod>2026-11-07</lastmod>
     </url>
 </urlset>
