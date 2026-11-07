@@ -3,7 +3,16 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Best Half-Ironman (70.3) Gifts & Gear (2026)</title>
+    <title>Best Half-Ironman (70.3) Gifts &amp; Gear (2026)</title>
+
+    <!-- SEO & Social Meta -->
+    <meta name="description" content="Gift ideas for Half-Ironman (70.3) athletes: GPS watches, bike gear, nutrition and recovery tools, picked by a triathlete who has raced the distance.">
+    <link rel="canonical" href="https://triathlongiftguide.com/half-ironman.html">
+    <meta property="og:site_name" content="Triathlon Gift Guide">
+    <meta property="og:title" content="Best Half-Ironman (70.3) Gifts &amp; Gear (2026)">
+    <meta property="og:description" content="Gift ideas for Half-Ironman (70.3) athletes: GPS watches, bike gear, nutrition and recovery tools, picked by a triathlete who has raced the distance.">
+    <meta property="og:url" content="https://triathlongiftguide.com/half-ironman.html">
+    <meta property="og:type" content="website">
 
     <script defer src="https://cloud.umami.is/script.js" data-website-id="dd871b80-f5ab-4e41-b2fb-2bd0ea331941"></script>
     
@@ -22,10 +31,12 @@
         .prod-title { font-size: 13px; font-weight: 600; margin-bottom: 4px; }
         .prod-desc { font-size: 11px; color: #888888; margin-bottom: 8px; line-height: 1.4; }
         .prod-price { font-size: 13px; font-weight: 700; color: #FF5500; }
+        .ad-label { font-size: 9px; font-weight: 700; text-transform: uppercase; letter-spacing: 1px; color: #888888; margin-bottom: 6px; }
         .nav-back { display: inline-block; margin-bottom: 20px; color: #888888; text-decoration: none; font-size: 13px; }
         .nav-back:hover { color: #FF5500; }
         footer { margin-top: 40px; padding: 20px 0; border-top: 1px solid #2d2d2d; text-align: center; font-size: 11px; color: #555; }
         footer a { color: #555; text-decoration: none; margin: 0 8px; }
+        footer a.guide-link { color: #888888; }
     </style>
 </head>
 <body>
@@ -33,7 +44,7 @@
         <a href="index.html" class="nav-back">← Back to Interactive Finder</a>
         
         <div class="header">
-            <h1>Best Half-Ironman (70.3) Gifts & Gear (2026)</h1>
+            <h1>Best Half-Ironman (70.3) Gifts &amp; Gear (2026)</h1>
             <p>Vetted, high-performance endurance gear tailored specifically for the demands of a 1.9km swim, 90km bike, and 21.1km run race day. No entry-level fluff, just pure racing and training essentials.</p>
         </div>
         <!-- Keep your beautiful headers intact. Replace the old static product cards grid with this layout wrapper: -->
@@ -42,7 +53,12 @@
         </div>
 
         <footer>
-            <p>&copy; 2026 Triathlon Gift Guide. All rights reserved.</p>
+            <p>More gift guides:
+                <a class="guide-link" href="beginner-triathlete.html">First-Timer</a> |
+                <a class="guide-link" href="sprint-triathlon.html">Sprint</a> |
+                <a class="guide-link" href="olympic-triathlon.html">Olympic</a>
+            </p>
+            <p style="margin-top: 12px;">&copy; 2026 Triathlon Gift Guide. All rights reserved.</p>
             <p style="margin-top: 8px;">
                 <a href="legal.html">Legal Notice (Impressum)</a> | <a href="privacy.html">Privacy Policy</a>
             </p>
@@ -54,6 +70,25 @@
     
     <!-- 2. Write a minimal script loop to extract only 'half' distance products -->
     <script>
+        // Adds schema.org ItemList data (ads are left out)
+        function addStructuredData(items) {
+            const data = {
+                "@context": "https://schema.org",
+                "@type": "ItemList",
+                "name": "Gifts and gear for Half-Ironman (70.3) triathletes",
+                "itemListElement": items.map((item, i) => ({
+                    "@type": "ListItem",
+                    "position": i + 1,
+                    "name": item.name,
+                    "description": item.desc
+                }))
+            };
+            const el = document.createElement('script');
+            el.type = 'application/ld+json';
+            el.textContent = JSON.stringify(data);
+            document.head.appendChild(el);
+        }
+
         function renderDistancePage() {
             const grid = document.getElementById('productGrid');
             grid.innerHTML = '';
@@ -62,9 +97,15 @@
             const filtered = database.filter(item => item.dist.includes('half'));
 
             filtered.forEach(item => {
+                const kind = item.sponsored ? 'ad' : 'product';
+                const rel = item.sponsored ? 'sponsored noopener' : 'noopener';
                 grid.innerHTML += `
-                    <a href="${item.url}" target="_blank" class="product-card">
+                    <a href="${item.url}" target="_blank" rel="${rel}" class="product-card"
+                       data-umami-event="product-click"
+                       data-umami-event-product="${item.name}"
+                       data-umami-event-kind="${kind}">
                         <div>
+                            ${item.sponsored ? '<div class="ad-label">Ad</div>' : ''}
                             <div class="img-placeholder">
                                 <img src="${item.img}" alt="${item.name}">
                             </div>
@@ -75,6 +116,8 @@
                     </a>
                 `;
             });
+
+            addStructuredData(filtered.filter(item => !item.sponsored));
         }
 
         // Run the script instantly on load
