@@ -1,0 +1,27 @@
+# Triathlon Gift Guide
+
+> A free gift guide that helps non-triathletes (partners, friends, family) choose the right gear for the triathlete in their life. Visitors filter products by the athlete's experience level, the budget and the race distance. Prices are in euros.
+
+The guide is written by Alex, a self-coached triathlete who has gone under 5 hours in a Half Ironman. According to the site, every product listed is gear the author has tested, raced with, or considers an essential. The site earns a commission from some of the links to retailers and may show clearly labelled ads (marked "Ad"). It is a small independent site, not a store: products are bought from the linked retailers.
+
+## Main pages
+
+- [Interactive gift finder](https://triathlongiftguide.com/): Filter all products by experience (first-timer or full-time hobbyist), price (under €30, €30-60, €60+) and race distance (sprint, Olympic, half, full).
+- [Gifts for first-time triathletes](https://triathlongiftguide.com/beginner-triathlete.html): Practical essentials for someone training for their first triathlon.
+- [Olympic distance triathlon gifts](https://triathlongiftguide.com/olympic-triathlon.html): Gear for athletes racing the standard Olympic distance (1.5 km swim, 40 km bike, 10 km run).
+- [Half-Ironman (70.3) gifts](https://triathlongiftguide.com/half-ironman.html): Gear for the 1.9 km swim, 90 km bike and 21.1 km run of a Half-Ironman race.
+
+## Gear categories covered
+
+- Swim: open-water goggles, anti-fog spray, hand paddles, changing robe for after the swim
+- Bike: portable electric tyre pump, bike computer, frame nutrition bag, aero calf sleeves
+- Run and tracking: GPS multisport watches
+- Transition: elastic speed laces
+- Nutrition: energy gels, electrolyte tablets
+- Recovery: percussion massage gun
+- Books: training guide for self-coached athletes
+
+## Legal
+
+- [Legal notice (Impressum)](https://triathlongiftguide.com/legal.html)
+- [Privacy policy](https://triathlongiftguide.com/privacy.html)
